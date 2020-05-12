@@ -1,9 +1,13 @@
-# Docker + FastAPI + Vue
+# Docker Deploy
 
 Technologies:
+- AWS
 - Docker
 - Python FastAPI
 - Vue JS
+
+
+
 
 ## Getting Started
 
@@ -70,7 +74,7 @@ This guide assumes basic understanding of Docker, Python, and Javascript.
      --rm -d \
      --name app \
      -p 5000:80 \
-     -v ${PWD}:/vue \
+     -v ${PWD}/vue:/vue \
      -v ${PWD}/data:/data \
      dockerfastapivue
 1. Open a web browser to: http://localhost:5000 and verify 
@@ -85,15 +89,11 @@ docker build --tag dockerfastapivue .
 
 Run an instance:
 ```
-docker run \
-    --rm -d \
-    --name app \
-    -p 5000:80 \
-    -v ${PWD}/vue:/vue \
-    -v ${PWD}/data:/data \
-    --env-file .env \
-    dockerfastapivue
+docker run --rm -d --name app -p 5000:80 -v ${PWD}/vue:/vue -v ${PWD}/data:/data --env-file .env dockerfastapivue
 ```
+
+docker stop app; docker build --tag dockerfastapivue .; docker run --rm -d --name app -p 5000:80 -v ${PWD}/vue:/vue -v ${PWD}/data:/data --env-file .env dockerfastapivue; docker logs app -f
+
 
 Access the database directly:
 ```

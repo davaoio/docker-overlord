@@ -1,16 +1,17 @@
 from fastapi import APIRouter, Header, HTTPException
 from pydantic import BaseModel
-from ..services import util, messages
+from ..services import util, users, aws
 
 router = APIRouter()
 
-@router.get("/")
-def get():
-    return messages.all() 
+@router.get("/ecr")
+def get_ecr(*, authorization: str = Header(None)):
+    user_detail = users.get_user_data_from_token(authorization)
+    if not user_detail:
+        raise HTTPException(status_code=403, detail="Invalid Authentication Token")
+    return aws.get_ecr()
 
-class Message(BaseModel):
-    text: str
-
+"""
 @router.post("/add")
 def add(message: Message, authorization: str = Header(None)):
     user_id = util.token_to_userid(authorization)
@@ -18,3 +19,4 @@ def add(message: Message, authorization: str = Header(None)):
         raise HTTPException(status_code=403, detail="Invalid Authentication Token")
     response = messages.add(user_id, message.text)
     return {"msg": response}
+"""

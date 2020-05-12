@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <button class="button" v-on:click="testAccountLogin">Test Account Login</button>
     <a class="button" :href="`https://github.com/login/oauth/authorize?client_id=${gitHubToken}`">Login via GitHub</a>
   </div>
 </template>
@@ -15,29 +14,19 @@ export default {
   name: "navbar",
   data() {
     return {
-      gitHubToken: "626687d69db48d6cf1d2",
+      gitHubToken: "a969a9a090a724f08bca",
     }
   },
   methods: {
-    loginSuccess(token) {
-      this.$store.dispatch("jwtSet", token);
+    loginSuccess(response) {
+      this.$store.dispatch("jwtSet", response.token);
+      this.$store.dispatch("userDetails", response.profile);
       this.$router.push("/");
-    },
-    testAccountLogin() {
-      var username = prompt("Please enter in a user name:");
-      console.log("Logging in with test account: " + username); // eslint-disable-line no-console
-      axios.post('/api/users/test-account', {
-        value: username
-      })
-      .then(response => {
-        //console.log("Test Account JWT: " + response.data.token); // eslint-disable-line no-console
-        this.loginSuccess(response.data.token);
-      });
     },
     oauthGitHub(code) {
       axios.post("/api/users/github",{value: code}).then(response => {
         //console.log(response.data); // eslint-disable-line no-console
-        this.loginSuccess(response.data.token);
+        this.loginSuccess(response.data);
       });
     },
   },
