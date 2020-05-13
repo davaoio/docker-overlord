@@ -5,9 +5,8 @@ client = boto3.client('ecr')
 
 def describe_repositories():
     response = client.describe_repositories()
-    ret = {}
-    for repo in response['repositories']:
-        ret[repo['repositoryName']] = repo['repositoryArn']
-        print(f"{repo['repositoryName']}\t{repo['repositoryArn']}")
-    return ret
-    
+    return response.get('repositories')
+
+def describe_images(repositoryName):
+    response = client.describe_images(repositoryName=repositoryName)
+    return response.get('imageDetails')

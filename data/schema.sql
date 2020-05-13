@@ -15,3 +15,11 @@ CREATE TABLE users_repositories (
     repository TEXT,
     UNIQUE(users_id, repository)
 );
+
+DROP TABLE IF EXISTS deployed_repository;
+CREATE TABLE deployed_repository (
+    repository TEXT,
+    image_tag TEXT,
+    released TEXT,
+    UNIQUE(repository)
+);

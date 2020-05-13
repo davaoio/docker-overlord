@@ -1,22 +1,28 @@
 from fastapi import APIRouter, Header, HTTPException
 from pydantic import BaseModel
-from ..services import util, users, aws
+from ..services import util, users, deploy
 
 router = APIRouter()
 
-@router.get("/ecr")
-def get_ecr(*, authorization: str = Header(None)):
+@router.get("/status")
+def get_status(repository: str, authorization: str = Header(None)):
     user_detail = users.get_user_data_from_token(authorization)
     if not user_detail:
         raise HTTPException(status_code=403, detail="Invalid Authentication Token")
-    return aws.get_ecr()
+    return deploy.get_status(repository)
 
-@router.get("/ecr/get-images")
-def get_images(repository: str, authorization: str = Header(None)):
+class Release(BaseModel):
+    repository: str
+    image: str
+
+@router.post("/release")
+def set_release(release: Release, authorization: str = Header(None)):
     user_detail = users.get_user_data_from_token(authorization)
     if not user_detail:
         raise HTTPException(status_code=403, detail="Invalid Authentication Token")
-    return aws.get_images(repository)    
+    if not deploy.set_release(release):
+        return False
+    return True
 
 
 """

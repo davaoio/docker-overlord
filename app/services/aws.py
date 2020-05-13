@@ -5,6 +5,8 @@ from ..services import util, sqlite, ecr
 def get_ecr():
     return ecr.describe_repositories()
 
+def get_images(repository):
+    return ecr.describe_images(repository)
 
 
 """
