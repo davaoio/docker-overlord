@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import 'bulma/css/bulma.css'
+import moment from 'moment';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -11,6 +12,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 library.add(faUserSecret)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
+
+Vue.prototype.moment = moment;
 
 Vue.config.productionTip = false
 Vue.config.devtools = true

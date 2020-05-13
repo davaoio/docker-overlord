@@ -21,5 +21,6 @@ CREATE TABLE deployed_repository (
     repository TEXT,
     image_tag TEXT,
     released TEXT,
+    locked TEXT,
     UNIQUE(repository)
 );

@@ -12,14 +12,17 @@
     </div>
     <section v-if="images">
       <hr />
-      <p class="subtitle">{{currentStatus}}</p>
+      <div class="notification is-warning is-light" v-if="currentStatus">
+        <strong>Current Image:</strong> {{currentStatus.image_tag}} ({{moment.utc(currentStatus.released).fromNow()}})
+      </div>
       <div class="box" v-for="image in images" :key="image.imageDigest">
-        <p><strong>{{image.imageTags}}</strong> {{image.imagePushedAt}} <button class="button is-link is-light" @click="setRelease(image.imageTags[0])">Release</button></p>
+        <p><strong>{{image.imageTags}}</strong> {{image.imagePushedAt}} <button class="button is-small is-link is-light" v-if="image.imageTags[0] != currentStatus.image_tag" @click="setRelease(image.imageTags[0])">Release</button></p>
       </div>
     </section>
     <hr />
     <p class="has-text-grey-light">{{repositories}}</p>
     <p class="has-text-grey-light">{{images}}</p>
+    <p class="has-text-grey-light">{{currentStatus}}</p>
   </div>
 </template>
 
@@ -51,17 +54,10 @@ export default {
       this.getStatus();
     },
     setRelease(image) {
-      console.log(this.selectedRepo); // eslint-disable-line no-console
-      console.log(image); // eslint-disable-line no-console
       axios.post("/api/deploy/release", {repository: this.selectedRepo, image}).then(() => this.getStatus());
     },
     getStatus() {
-      axios.get("/api/deploy/status", {params: {repository: this.selectedRepo}}).then(response => {
-        console.log(response.data); // eslint-disable-line no-console
-
-        this.currentStatus = response.data;
-
-      });
+      axios.get("/api/deploy/status", {params: {repository: this.selectedRepo}}).then(response => this.currentStatus = response.data);
     },
   },
   mounted() {
