@@ -16,7 +16,7 @@
         <strong>Current Image:</strong> {{currentStatus.image_tag}} ({{moment.utc(currentStatus.released).fromNow()}})
       </div>
       <div class="box" v-for="image in images" :key="image.imageDigest">
-        <p><strong>{{image.imageTags}}</strong> {{image.imagePushedAt}} <button class="button is-small is-link is-light" v-if="currentStatus && image.imageTags[0] != currentStatus.image_tag" @click="setRelease(image.imageTags[0])">Release</button></p>
+        <p><strong>{{image.imageTags}}</strong> {{image.imagePushedAt}} <button class="button is-small is-link is-light" v-if="!currentStatus || image.imageTags[0] != currentStatus.image_tag" @click="setRelease(image.imageTags[0])">Release</button></p>
       </div>
     </section>
   </div>
@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     selectRepo() {
-      console.log(this.selectedRepo); // eslint-disable-line no-console
+      //console.log(this.selectedRepo); // eslint-disable-line no-console
       axios.get("/api/aws/ecr/get-images", {params: {repository: this.selectedRepo}}).then(response => this.images = response.data);
       this.getStatus();
     },
