@@ -15,8 +15,6 @@ app.include_router(users.router, prefix="/api/users")
 app.include_router(aws.router, prefix="/api/aws")
 app.include_router(deploy.router, prefix="/api/deploy")
 
-
-
 @app.get("/.*", include_in_schema=False)
 def root():
     with open('/vue/dist/index.html') as f:
