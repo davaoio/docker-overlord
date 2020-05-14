@@ -1,7 +1,13 @@
 <template>
-  <div class="container">
-    <a class="button" v-if="oauthUrls" :href="oauthUrls.github">Login via GitHub</a>
-  </div>
+  <section class="hero is-light">
+    <div class="hero-body">
+      <div class="container">
+        <h2 class="subtitle">
+          Loading...
+        </h2>
+      </div>
+    </div>
+  </section>
 </template>
 
 
@@ -11,12 +17,7 @@
 import axios from "axios";
 
 export default {
-  name: "navbar",
-  data() {
-    return {
-      oauthUrls: false,
-    }
-  },
+  name: "Login",
   methods: {
     loginSuccess(response) {
       this.$store.dispatch("jwtSet", response.token);
@@ -33,18 +34,10 @@ export default {
   mounted() {
     if (this.$route.query.oauth) {
       this.oauthGitHub(this.$route.query.code);
+    } else {
+      axios.get("/api/users/oauth-urls").then(response => window.location.href = response.data.github);
     }
-    axios.get("/api/users/oauth-urls").then(response => this.oauthUrls = response.data)
+    
   },
 };
 </script>
-<style scoped>
-.g-signin-button {
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 3px;
-  background-color: #3c82f7;
-  color: #fff;
-  box-shadow: 0 3px 0 #0f69ff;
-}
-</style>

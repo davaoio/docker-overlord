@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <section class="section">
     <div class="field">
       <div class="control">
         <div class="select is-medium">
@@ -19,7 +19,7 @@
         <p><strong>{{image.imageTags}}</strong> {{image.imagePushedAt}} <button class="button is-small is-link is-light" v-if="!currentStatus || image.imageTags[0] != currentStatus.image_tag" @click="setRelease(image.imageTags[0])">Release</button></p>
       </div>
     </section>
-  </div>
+  </section>
 </template>
 
 <script>
