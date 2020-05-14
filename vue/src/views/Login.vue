@@ -1,8 +1,8 @@
 <template>
-  <section class="hero is-light">
+  <section class="hero is-light is-fullheight">
     <div class="hero-body">
       <div class="container">
-        <h2 class="subtitle">
+        <h2 class="subtitle has-text-centered">
           Loading...
         </h2>
       </div>
@@ -22,6 +22,7 @@ export default {
     loginSuccess(response) {
       this.$store.dispatch("jwtSet", response.token);
       this.$store.dispatch("userDetails", response.profile);
+      this.$store.dispatch("admin", response.admin);
       this.$router.push("/");
     },
     oauthGitHub(code) {

@@ -30,7 +30,7 @@ export default {
   name: "home",
   computed: {
     ...mapGetters([
-      "loggedIn", "userDetails"
+      "loggedIn", "userDetails", "admin"
     ])
   },
   data() {

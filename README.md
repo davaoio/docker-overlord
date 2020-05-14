@@ -30,7 +30,7 @@ docker run \
   -p 5000:80 \
   -v /data:/data \
   --env-file /data/.env \
-  wfong/docker-overlord:70d56576b1df4160ddd529825d2dc35ca8376c5c
+  wfong/docker-overlord:6202d1d84a5ec4ece032ddd5db6d470071fa25ee
 ```
 
 ## Development

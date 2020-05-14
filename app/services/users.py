@@ -21,6 +21,13 @@ def lookup(oauth):
     params = (oauth,)
     return sqlite.read(query, params, one=True)
 
+def get_all():
+    query = "SELECT * FROM users"
+    return sqlite.read(query)
+
+
+# Login --------------------------------
+
 def create_login_token(sub):
     return jwt.encode({
         'sub': sub,
@@ -79,3 +86,19 @@ def github_get_user_profile(oauth_token):
     if response.status_code != 200:
         return False
     return response.json()
+
+
+# Repo --------------------------------
+# Probably should use a new endpoint...
+
+def repo_get(users_id):
+    query = "SELECT repos FROM users WHERE id = ?"
+    params = (users_id,)
+    return sqlite.read(query, params, one=True)
+
+def repo_set(users_id, repos):
+    query = "UPDATE users SET repos = ? WHERE id = ?"
+    params = (json.dumps(repos), users_id)
+    if not sqlite.write(query, params):
+        return False
+    return True
