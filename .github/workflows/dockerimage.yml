@@ -1,0 +1,40 @@
+name: Building and pushing a docker image to Docker Hub
+
+on:
+  pull_request:
+    paths:
+    - app/**
+    branches:         
+    - master
+  push:
+    paths:
+    - app/**
+    branches:         
+    - master   
+
+env:
+  CONTAINER_IMAGE: docker-overlord:${{ github.sha }}
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+
+jobs:
+  build-and-push:
+    name: Building and pushing image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Log Into Docker Hub
+      run: |
+        $( echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin )
+
+    - name: Build and tag the image
+      run: |
+        docker build -t $CONTAINER_IMAGE  .
+
+    - name: Push
+      if: github.ref == 'refs/heads/master'
+      run: |
+        docker push $DOCKER_USERNAME/$CONTAINER_IMAGE
