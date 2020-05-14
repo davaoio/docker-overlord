@@ -20,7 +20,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag $CONTAINER_IMAGE
+      run: docker build . --file Dockerfile --tag $DOCKER_USERNAME/$CONTAINER_IMAGE
     
     - name: Set up Docker Hub
       run: echo $DOCKER_TOKEN | docker login --username=$DOCKER_USERNAME --password-stdin
