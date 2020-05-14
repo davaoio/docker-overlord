@@ -9,3 +9,4 @@ COPY requirements.txt /
 RUN pip install -r /requirements.txt
 COPY --from=build /vue/dist /vue/dist
 COPY ./app /app/app
+COPY ./data/schema.sql /app
