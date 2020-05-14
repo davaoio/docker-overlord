@@ -16,13 +16,9 @@
         <strong>Current Image:</strong> {{currentStatus.image_tag}} ({{moment.utc(currentStatus.released).fromNow()}})
       </div>
       <div class="box" v-for="image in images" :key="image.imageDigest">
-        <p><strong>{{image.imageTags}}</strong> {{image.imagePushedAt}} <button class="button is-small is-link is-light" v-if="image.imageTags[0] != currentStatus.image_tag" @click="setRelease(image.imageTags[0])">Release</button></p>
+        <p><strong>{{image.imageTags}}</strong> {{image.imagePushedAt}} <button class="button is-small is-link is-light" v-if="currentStatus && image.imageTags[0] != currentStatus.image_tag" @click="setRelease(image.imageTags[0])">Release</button></p>
       </div>
     </section>
-    <hr />
-    <p class="has-text-grey-light">{{repositories}}</p>
-    <p class="has-text-grey-light">{{images}}</p>
-    <p class="has-text-grey-light">{{currentStatus}}</p>
   </div>
 </template>
 
