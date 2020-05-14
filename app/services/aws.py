@@ -2,10 +2,13 @@ import uuid
 from datetime import datetime
 from ..services import util, sqlite, ecr
 
-def get_ecr():
+def ecr_get_all():
     return ecr.describe_repositories()
 
-def get_images(repository):
+def ecr_get_details(repository):
+    return ecr.describe_repository(repository)
+
+def ecr_get_images(repository):
     return ecr.describe_images(repository)
 
 

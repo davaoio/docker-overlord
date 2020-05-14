@@ -7,6 +7,10 @@ def describe_repositories():
     response = client.describe_repositories()
     return response.get('repositories')
 
+def describe_repository(repository):
+    response = client.describe_repositories(repositoryNames=[repository])
+    return response.get('repositories')
+
 def describe_images(repositoryName):
     response = client.describe_images(repositoryName=repositoryName)
     return response.get('imageDetails')
