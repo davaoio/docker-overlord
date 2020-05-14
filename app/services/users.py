@@ -6,6 +6,11 @@ import json
 from datetime import datetime, timedelta
 from ..services import util, sqlite
 
+def oauth_urls():
+    ret = {}
+    ret['github'] = f"https://github.com/login/oauth/authorize?client_id={os.environ.get('GITHUB_CLIENT_ID')}"
+    return ret
+
 def get_details(id):
     query = "SELECT * FROM users WHERE id = ?"
     params = (id,)

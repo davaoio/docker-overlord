@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <a class="button" :href="`https://github.com/login/oauth/authorize?client_id=${gitHubToken}`">Login via GitHub</a>
+    <a class="button" v-if="oauthUrls" :href="oauthUrls.github">Login via GitHub</a>
   </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
   name: "navbar",
   data() {
     return {
-      gitHubToken: "a969a9a090a724f08bca",
+      oauthUrls: false,
     }
   },
   methods: {
@@ -34,6 +34,7 @@ export default {
     if (this.$route.query.oauth) {
       this.oauthGitHub(this.$route.query.code);
     }
+    axios.get("/api/users/oauth-urls").then(response => this.oauthUrls = response.data)
   },
 };
 </script>

@@ -7,6 +7,10 @@ router = APIRouter()
 class LoginToken(BaseModel):
     value: str
 
+@router.get("/oauth-urls")
+def oauth_urls():
+    return users.oauth_urls()
+
 @router.post("/github")
 def login_github(token: LoginToken):
     profile = users.github_login(token.value)
