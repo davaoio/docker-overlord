@@ -21,12 +21,3 @@ app.include_router(deploy.router, prefix="/api/deploy")
 def root():
     with open('/vue/dist/index.html') as f:
         return HTMLResponse(content=f.read(), status_code=200)
-
-
-@app.get("/log-output-test")
-def log_output_test():
-    util.logger.debug("logging debug")
-    util.logger.info("logging info")
-    util.logger.warn("logging warning")
-    util.logger.error("logging error")
-    return {"msg": "Logging output"}
