@@ -78,12 +78,16 @@ def github_token_to_access_code(token):
     }
     response = requests.post("https://github.com/login/oauth/access_token", data=payload, headers={'Accept': 'application/json'})
     if response.status_code != 200:
+        util.logger.error(f"[github_token_to_access_code] GitHub returned code: {response.status_code} != 200")
+        util.logger.error(response.text)
         return False
     return response.json()
 
 def github_get_user_profile(oauth_token):
     response = requests.get("https://api.github.com/user", headers={'Authorization': f"token {oauth_token}"})
     if response.status_code != 200:
+        util.logger.error(f"[github_get_user_profile] GitHub returned code: {response.status_code} != 200")
+        util.logger.error(response.text)
         return False
     return response.json()
 

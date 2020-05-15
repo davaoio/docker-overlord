@@ -1,11 +1,14 @@
 import uuid
 from datetime import datetime
-from ..services import util, sqlite, ec2
+from ..services import util, sqlite, ec2, ecr
 
 def get_status(name):
     query = "SELECT * FROM deployed_repository WHERE repository = ?"
     params = (name,)
-    return sqlite.read(query, params, one=True)
+    ret = {}
+    ret['deployed'] = sqlite.read(query, params, one=True)
+    ret['details'] = ecr.describe_repository(name)
+    return ret
 
 def set_release(release):
     query = "INSERT INTO deployed_repository (repository, image_tag, released) VALUES (?,?,datetime('now')) ON CONFLICT (repository) DO UPDATE SET image_tag = ?, released = datetime('now')"
