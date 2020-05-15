@@ -24,18 +24,6 @@ def set_release(release: Release, authorization: str = Header(None)):
         return False
     return True
 
-
 @router.get("/instance")
 def instance(id: str):
     return deploy.instance(id)
-
-
-"""
-@router.post("/add")
-def add(message: Message, authorization: str = Header(None)):
-    user_id = util.token_to_userid(authorization)
-    if not user_id:
-        raise HTTPException(status_code=403, detail="Invalid Authentication Token")
-    response = messages.add(user_id, message.text)
-    return {"msg": response}
-"""
