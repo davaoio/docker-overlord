@@ -25,6 +25,11 @@ def set_release(release: Release, authorization: str = Header(None)):
     return True
 
 
+@router.get("/instance")
+def instance(id: str):
+    return deploy.instance(id)
+
+
 """
 @router.post("/add")
 def add(message: Message, authorization: str = Header(None)):

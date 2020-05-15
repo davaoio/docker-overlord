@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from ..services import util, sqlite
+from ..services import util, sqlite, ec2
 
 def get_status(name):
     query = "SELECT * FROM deployed_repository WHERE repository = ?"
@@ -13,6 +13,11 @@ def set_release(release):
     if not sqlite.write(query, params):
         return False
     return True
+
+def instance(id):
+    tags = ec2.describe_tags(id)
+    repository = ec2._get_tag_value(tags, 'Repository')
+    return get_status(repository)
 
 """
 def add(users_id, message_text):
