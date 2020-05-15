@@ -1,25 +1,45 @@
 <template>
-  <section class="section">
-    <div class="field">
-      <div class="control">
-        <div class="select is-medium">
-          <select v-model="selectedRepo" @change="selectRepo">
-            <option disabled value="">Select Repository</option>
-            <option v-for="repo in repositories" :key="repo.registryId">{{repo.repositoryName}}</option>
-          </select>
+  <div>
+    <section class="hero is-light is-fullheight" v-if="repositories && repositories.length == 0">
+      <div class="hero-body">
+        <div class="container">
+          <h2 class="subtitle has-text-centered">
+            You don't have access to any repositories. Please contact the admin.
+          </h2>
         </div>
       </div>
-    </div>
-    <section v-if="images">
-      <hr />
-      <div class="notification is-warning is-light" v-if="currentStatus">
-        <strong>Current Image:</strong> {{currentStatus.image_tag}} ({{moment.utc(currentStatus.released).fromNow()}})
-      </div>
-      <div class="box" v-for="image in images" :key="image.imageDigest">
-        <p><strong>{{image.imageTags}}</strong> {{image.imagePushedAt}} <button class="button is-small is-link is-light" v-if="!currentStatus || image.imageTags[0] != currentStatus.image_tag" @click="setRelease(image.imageTags[0])">Release</button></p>
+    </section>
+    <section class="hero is-light is-fullheight" v-if="!repositories">
+      <div class="hero-body">
+        <div class="container">
+          <h2 class="subtitle has-text-centered">
+            Loading...
+          </h2>
+        </div>
       </div>
     </section>
-  </section>
+    <section class="section">
+      <div class="field" v-if="repositories && repositories.length > 0">
+        <div class="control">
+          <div class="select is-medium">
+            <select v-model="selectedRepo" @change="selectRepo">
+              <option disabled value="">Select Repository</option>
+              <option v-for="repo in repositories" :key="repo.registryId">{{repo.repositoryName}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <section v-if="images">
+        <hr />
+        <div class="notification is-warning is-light" v-if="currentStatus">
+          <strong>Current Image:</strong> {{currentStatus.image_tag}} ({{moment.utc(currentStatus.released).fromNow()}})
+        </div>
+        <div class="box" v-for="image in images" :key="image.imageDigest">
+          <p><strong>{{image.imageTags}}</strong> {{image.imagePushedAt}} <button class="button is-small is-link is-light" v-if="!currentStatus || image.imageTags[0] != currentStatus.image_tag" @click="setRelease(image.imageTags[0])">Release</button></p>
+        </div>
+      </section>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -59,7 +79,13 @@ export default {
   mounted() {
     //console.log("LoggedIn: " + this.loggedIn); // eslint-disable-line no-console
     if (!this.loggedIn) this.$router.push("/login");
-    axios.get("/api/aws/ecr").then(response => this.repositories = response.data);
+    axios.get("/api/aws/ecr").then(response => {
+      if (response.data) {
+        this.repositories = response.data;
+      } else {
+        this.repositories = [];
+      }
+    });
   },
 };
 </script>

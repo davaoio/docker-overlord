@@ -89,7 +89,7 @@ export default {
     },
     getRepos(id) {
       axios.get("/api/users/get-repos", {params: {id}}).then(response => {
-        console.log(response.data); // eslint-disable-line no-console
+        //console.log(response.data); // eslint-disable-line no-console
         if (response.data.repos) {
           this.userRepos = JSON.parse(response.data.repos);
         } else {

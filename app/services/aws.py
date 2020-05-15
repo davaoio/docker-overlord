@@ -5,6 +5,14 @@ from ..services import util, sqlite, ecr
 def ecr_get_all():
     return ecr.describe_repositories()
 
+def ecr_get_repos_by_user(user_repos):
+    repos = ecr_get_all()
+    ret = []
+    for repo in repos:
+        if repo['repositoryName'] in user_repos:
+            ret.append(repo)
+    return ret
+
 def ecr_get_details(repository):
     return ecr.describe_repository(repository)
 
