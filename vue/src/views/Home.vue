@@ -73,7 +73,7 @@ export default {
       axios.post("/api/deploy/release", {repository: this.selectedRepo, image}).then(() => this.getStatus());
     },
     getStatus() {
-      axios.get("/api/deploy/status", {params: {repository: this.selectedRepo}}).then(response => this.currentStatus = response.data);
+      axios.get("/api/deploy/status", {params: {repository: this.selectedRepo}}).then(response => this.currentStatus = response.data.deployed);
     },
   },
   mounted() {
