@@ -29,15 +29,33 @@
           </div>
         </div>
       </div>
-      <section v-if="images">
+      <div class="columns" v-if="images">
         <hr />
-        <div class="notification is-warning is-light" v-if="currentStatus">
-          <strong>Current Image:</strong> {{currentStatus.image_tag}} ({{moment.utc(currentStatus.released).fromNow()}})
+        <div class="column">
+          <div class="notification is-warning is-light" v-if="currentStatus">
+            <strong>Current Image:</strong> {{currentStatus.image_tag}}<br /><small>{{moment.utc(currentStatus.released).fromNow()}}</small>
+          </div>
+          <div class="box" v-for="image in images" :key="image.imageDigest">
+            <p><strong>{{image.imageTags}}</strong> {{image.imagePushedAt}} <button class="button is-small is-link is-light" v-if="!currentStatus || image.imageTags[0] != currentStatus.image_tag" @click="setRelease(image.imageTags[0])">Release</button></p>
+          </div>
         </div>
-        <div class="box" v-for="image in images" :key="image.imageDigest">
-          <p><strong>{{image.imageTags}}</strong> {{image.imagePushedAt}} <button class="button is-small is-link is-light" v-if="!currentStatus || image.imageTags[0] != currentStatus.image_tag" @click="setRelease(image.imageTags[0])">Release</button></p>
+        <div class="column">
+          <div class="field">
+            <label class="label">Container Configuration</label>
+            <div class="control">
+              <textarea class="textarea" v-model="newConfig" rows="10" placeholder="YAML style configuration"></textarea>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <button class="button is-link" :disabled="newConfig==currentStatus.config" @click="saveConfig">Save</button>
+            </div>
+          </div>
+          <hr />
+          <p class="has-text-grey-light">{{currentStatus}}</p>
         </div>
-      </section>
+      </div>
+
     </section>
   </div>
 </template>
@@ -59,6 +77,7 @@ export default {
       selectedRepo: "",
       images: false,
       currentStatus: false,
+      newConfig: null,
     };
   },
   components: {
@@ -73,7 +92,13 @@ export default {
       axios.post("/api/deploy/release", {repository: this.selectedRepo, image}).then(() => this.getStatus());
     },
     getStatus() {
-      axios.get("/api/deploy/status", {params: {repository: this.selectedRepo}}).then(response => this.currentStatus = response.data.deployed);
+      axios.get("/api/deploy/status", {params: {repository: this.selectedRepo}}).then(response => {
+        this.currentStatus = response.data.deployed;
+        this.newConfig = response.data.deployed.config;
+      });
+    },
+    saveConfig() {
+      axios.post("/api/deploy/set-config", {repo: this.selectedRepo, config: this.newConfig}).then(() => this.getStatus());
     },
   },
   mounted() {

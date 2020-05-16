@@ -22,15 +22,9 @@ def instance(id):
     repository = ec2._get_tag_value(tags, 'Repository')
     return get_status(repository)
 
-"""
-def add(users_id, message_text):
-    query = "INSERT INTO messages (created_at, users_id, message) VALUES (?,?,?)"
-    params = (datetime.utcnow().isoformat(), users_id, message_text)
-    if sqlite.write(query, params):
-        return True
-    return False
-
-def all():
-    query = "SELECT m.id, m.created_at, m.message, u.name FROM messages AS m INNER JOIN users AS u ON m.users_id = u.id ORDER BY m.created_at DESC"
-    return sqlite.read(query)
-"""
+def set_config(repo, config):
+    query = "UPDATE deployed_repository SET config = ? WHERE repository = ?"
+    params = (config, repo)
+    if not sqlite.write(query, params):
+        return False
+    return True

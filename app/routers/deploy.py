@@ -27,3 +27,16 @@ def set_release(release: Release, authorization: str = Header(None)):
 @router.get("/instance")
 def instance(id: str):
     return deploy.instance(id)
+
+class RepoConfig(BaseModel):
+    repo: str
+    config: str
+
+@router.post("/set-config")
+def set_config(rc: RepoConfig, authorization: str = Header(None)):
+    user_detail = users.get_user_data_from_token(authorization)
+    if not user_detail:
+        raise HTTPException(status_code=403, detail="Invalid Authentication Token")
+    if not deploy.set_config(rc.repo, rc.config):
+        return False
+    return True
