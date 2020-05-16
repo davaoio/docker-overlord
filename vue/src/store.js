@@ -23,6 +23,8 @@ export default new Vuex.Store({
   },
   actions: {
     jwtSet({commit}, jwt) {
+      //console.log(`[store.js] saving jwt: ${jwt}`); // eslint-disable-line no-console
+      localStorage.jwt = jwt;
       axios.defaults.headers.common['Authorization'] = jwt;
       commit('JWT_SET', jwt);
     },

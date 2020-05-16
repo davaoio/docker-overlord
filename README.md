@@ -20,6 +20,8 @@ AWS_SECRET_ACCESS_KEY=abc...xyz
 
 No need for AWS secrets if using EC2 roles.
 
+docker exec -it app sqlite3 /data/sqlite.db ".read schema.sql"
+docker exec -it app sqlite3 /data/sqlite.db "UPDATE users SET admin = 1"
 
 ## Production
 
@@ -30,7 +32,7 @@ docker run \
   -p 5000:80 \
   -v /data:/data \
   --env-file /data/.env \
-  wfong/docker-overlord:6202d1d84a5ec4ece032ddd5db6d470071fa25ee
+  wfong/docker-overlord:c5d89c6be5a997ccdd8f5a96055e8ab1e5f57b11
 ```
 
 ## Development

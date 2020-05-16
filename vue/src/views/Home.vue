@@ -48,7 +48,7 @@
           </div>
           <div class="field">
             <div class="control">
-              <button class="button is-link" :disabled="newConfig==currentStatus.config" @click="saveConfig">Save</button>
+              <button class="button is-link" @click="saveConfig">Save</button>
             </div>
           </div>
           <hr />
@@ -94,7 +94,9 @@ export default {
     getStatus() {
       axios.get("/api/deploy/status", {params: {repository: this.selectedRepo}}).then(response => {
         this.currentStatus = response.data.deployed;
-        this.newConfig = response.data.deployed.config;
+        if (response.data.deployed) {
+          this.newConfig = response.data.deployed.config;
+        }
       });
     },
     saveConfig() {
@@ -103,7 +105,6 @@ export default {
   },
   mounted() {
     //console.log("LoggedIn: " + this.loggedIn); // eslint-disable-line no-console
-    if (!this.loggedIn) this.$router.push("/login");
     axios.get("/api/aws/ecr").then(response => {
       if (response.data) {
         this.repositories = response.data;
