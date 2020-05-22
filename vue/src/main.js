@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import 'bulma/css/bulma.css'
-import axios from "axios";
+//import axios from "axios";
 import moment from 'moment';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
@@ -19,10 +19,12 @@ Vue.prototype.moment = moment;
 Vue.config.productionTip = false
 Vue.config.devtools = true
 
+/*
 if (localStorage.jwt) {
   //console.log(`[main.js] found jwt: ${localStorage.jwt}`); // eslint-disable-line no-console
   axios.defaults.headers.common['Authorization'] = localStorage.jwt;
 }
+*/
 
 new Vue({
   router,

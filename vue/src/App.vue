@@ -18,6 +18,8 @@ export default {
     if (window.location.pathname == '/oauth/github') {
       window.location.href = `/#/login?oauth=github&code=${window.location.search.substring(6)}`;
     }
+    if (!this.loggedIn) this.$router.push("/login");
+    /*
     if (localStorage.jwt) {  
       // Need to set the JWT token to state here
       //console.log(`[App.js] found jwt: ${localStorage.jwt}`); // eslint-disable-line no-console
@@ -26,6 +28,7 @@ export default {
       console.log(`[App.js] didn't find JWT, checking if logged in`); // eslint-disable-line no-console
       if (!this.loggedIn ) this.$router.push("/login");
     }
+    */
   }
 };
 </script>
