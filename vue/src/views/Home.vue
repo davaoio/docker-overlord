@@ -35,8 +35,8 @@
           <div class="notification is-warning is-light" v-if="currentStatus">
             <strong>Current Image:</strong> {{currentStatus.image_tag}}<br /><small>{{moment.utc(currentStatus.released).fromNow()}}</small>
           </div>
-          <div class="box" v-for="image in images" :key="image.imageDigest">
-            <p><strong>{{image.imageTags}}</strong> {{image.imagePushedAt}} <button class="button is-small is-link is-light" v-if="!currentStatus || image.imageTags[0] != currentStatus.image_tag" @click="setRelease(image.imageTags[0])">Release</button></p>
+          <div class="box" v-for="image in imagesDesc" :key="image.imageDigest">
+            <p><strong>{{image.imageTags}}</strong> {{moment.utc(image.imagePushedAt).fromNow()}} <button class="button is-small is-link is-light" v-if="!currentStatus || image.imageTags[0] != currentStatus.image_tag" @click="setRelease(image.imageTags[0])">Release</button></p>
           </div>
         </div>
         <div class="column">
@@ -69,7 +69,18 @@ export default {
   computed: {
     ...mapGetters([
       "loggedIn", "userDetails", "admin"
-    ])
+    ]),
+    imagesDesc() {
+      let arr = this.images;
+      return arr.sort(function(a, b) {
+        var keyA = new Date(a.imagePushedAt),
+          keyB = new Date(b.imagePushedAt);
+        // Compare the 2 dates
+        if (keyA > keyB) return -1;
+        if (keyA < keyB) return 1;
+        return 0;
+      });
+    }
   },
   data() {
     return {
