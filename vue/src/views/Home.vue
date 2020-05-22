@@ -52,7 +52,18 @@
             </div>
           </div>
           <hr />
-          <p class="has-text-grey-light">{{currentStatus}}</p>
+          <p class="has-text-grey-light"><strong>Example:</strong></p>
+          <pre class="has-text-grey-light is-family-code">
+environment:
+  - REDIS=redis
+ports:
+  '5000/tcp': 5000
+volumes:
+  '/data/images/': 
+    bind: /data/images
+    mode: rw
+</pre>
+<p class="has-text-grey-light">Reference: https://docker-py.readthedocs.io/en/stable/containers.html</p>
         </div>
       </div>
 
