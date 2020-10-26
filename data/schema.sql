@@ -19,3 +19,13 @@ CREATE TABLE deployed_repository (
     config TEXT,
     UNIQUE(repository)
 );
+
+DROP TABLE IF EXISTS configs;
+CREATE TABLE configs (
+    id INTEGER PRIMARY KEY,
+    repository TEXT,
+    version TEXT,
+    config TEXT,
+    created_on TEXT,
+    UNIQUE(repository, version)
+);

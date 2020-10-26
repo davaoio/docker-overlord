@@ -42,8 +42,21 @@ docker run \
 
 ## Development
 
+Create Vue build:
+```
+cd vue && npm install && npm run build && cd ..
+```
+
+Init Database:
+```
+sqlite3 data/sqlite.db < data/schema.sql
+sqlite3 data/sqlite.db "UPDATE users SET admin = 1"
+```
+
+Build and start Docker:
 ```
 docker stop app
+docker rm app
 docker build -t docker-overlord .
 docker run \
   --name app --rm -d \
